@@ -12,7 +12,7 @@ FONT_SIZE = 30
 def put_text(src, text, pos, font_size, font_color):
     img_pil = Image.fromarray(src)
     draw = ImageDraw.Draw(img_pil)
-    font = ImageFont.truetype('C:\\hijeong\\NanumSquare_acEB.ttf', font_size) #경로 맞춰서 수정
+    font = ImageFont.truetype('.\NanumSquare_acEB.ttf', font_size) #경로 맞춰서 수정
     draw.text(pos, text, font=font, fill=font_color)
     return np.array(img_pil)
 
