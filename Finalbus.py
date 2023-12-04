@@ -12,19 +12,14 @@ FONT_SIZE = 30
 def put_text(src, text, pos, font_size, font_color):
     img_pil = Image.fromarray(src)
     draw = ImageDraw.Draw(img_pil)
-    font = ImageFont.truetype('./NanumSquare_acEB.ttf', font_size) #경로 맞춰서 수정
+    font = ImageFont.truetype('C:\\hijeong\\NanumSquare_acEB.ttf', font_size) #경로 맞춰서 수정
     draw.text(pos, text, font=font, fill=font_color)
     return np.array(img_pil)
 
 
 #사람 카운팅 및 문닫힘 시간 계산
-<<<<<<< HEAD:Finalbus.py
 start_time = None
 closing_time = 30 #기본으로 설정된 문 닫히는 시간
-=======
-start_time = time.time()
-closing_time = 0
->>>>>>> 689b619f530eb14ebf2e4fb59c5c9fd431324f08:bus_count.py
 p_count = 0
 
 
@@ -34,12 +29,8 @@ yolo_model = torch.hub.load('ultralytics/yolov5', 'yolov5l', #인식이 오래 �
 yolo_model.classes = [0]  # 예측 클래스 (사람)
 
 #웹캠 초기화 및 촬영데이터저장
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 ret, frame = cap.read()
-<<<<<<< HEAD:Finalbus.py
-=======
-#out = cv2.VideoWriter("output.mp4", cv2.VideoWriter_fourcc(*"mp4v"), 20.0, (frame.shape[1], frame.shape[0]))
->>>>>>> 689b619f530eb14ebf2e4fb59c5c9fd431324f08:bus_count.py
 
 
 
@@ -53,33 +44,20 @@ while True:
     results_refine = results.pandas().xyxy[0].values
     nms_human = len(results_refine)
     rows, cols = frame.shape[:2]
-<<<<<<< HEAD:Finalbus.py
     
-=======
->>>>>>> 689b619f530eb14ebf2e4fb59c5c9fd431324f08:bus_count.py
     # 한글 텍스트를 이미지에 그리기
-    display_time = time.strftime('%H:%M:%S', start_time)
     frame = put_text(frame, '명이 탑승 중 입니다', (50, 50), FONT_SIZE, COLOR)
     frame = put_text(frame, '초 뒤에 문이 닫힙니다', (70, 100), FONT_SIZE, COLOR)
-<<<<<<< HEAD:Finalbus.py
     
-=======
-    #frame = put_text(frame, f'Open time: {display_time}', (cols-300, 50), FONT_SIZE, (0, 0, 255))
->>>>>>> 689b619f530eb14ebf2e4fb59c5c9fd431324f08:bus_count.py
 
     #사람 수 카운팅에 대해 시간 계산
     if nms_human >= 0:
         p_count = nms_human
-        if True :
+        if start_time is None :
             start_time = time.time()
         
         #문닫힘타이머는 최대 60초, 한명이 탑승할 때마다 기존 시간에 15초씩 추가되게 작성 
-<<<<<<< HEAD:Finalbus.py
         elapsed_time =  int(closing_time + (p_count*15)  - (time.time() - start_time))
-=======
-        # elapsed_time =  int(closing_time + (p_count*15)  - (time.time() - start_time))
-        elapsed_time =  int(closing_time + (p_count*15))
->>>>>>> 689b619f530eb14ebf2e4fb59c5c9fd431324f08:bus_count.py
         if elapsed_time >= 60:
             elapsed_time = 60
             
@@ -97,7 +75,6 @@ while True:
     cv2.putText(frame, str(p_count) , (20, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0), 2)
     cv2.putText(frame, str(elapsed_time),(20, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0), 2)
     
-<<<<<<< HEAD:Finalbus.py
     
     # 프로그램 시작 시간 (문 열림 시간) 출력
     start_struct_time = time.localtime(start_time)
@@ -108,9 +85,6 @@ while True:
     cv2.imshow("bus", frame)
     
     if cv2.waitKey(1) == ord("r"): #타이머리셋 
-=======
-    if cv2.waitKey(1) == ord("r"):
->>>>>>> 689b619f530eb14ebf2e4fb59c5c9fd431324f08:bus_count.py
         start_time = time.time()
         p_count = 0
     
